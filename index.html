@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Manish Verma — Portfolio</title>
+  <meta name="description" content="Manish Verma: release manager at Deloitte and AI product management learner. Case studies, prototypes and automations.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Pinyon+Script&family=Cormorant+Garamond:ital,wght@1,500;1,600&family=Ballet:opsz@16..72&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script>try{if(sessionStorage.getItem("mv-intro"))document.documentElement.classList.add("no-intro")}catch(e){}</script>
+</head>
+<body>
+  <!-- INTRO (plays once per visit, ~1.8s). Edit the words below to change it. -->
+  <div class="intro" id="intro" aria-hidden="true">
+    <div class="intro-dots" id="introDots"></div>
+    <div class="intro-copy">
+      <p class="il intro-eyebrow"><span>Hello, I'm Manish</span></p>
+      <h2 class="intro-h">
+        <span class="il"><span>I break products down,</span></span>
+        <span class="il"><span>prototype the fix,</span></span>
+        <span class="il"><span>and ship it.</span></span>
+      </h2>
+      <span class="intro-pill">See my work</span>
+    </div>
+  </div>
+
+  <div id="nav"></div>
+
+  <main id="top">
+    <h1 class="sr-only">Manish Verma, Release Manager and AI product management</h1>
+
+    <!-- ABOUT (LOCKED: approved design and animation, do not change unless the owner asks) -->
+    <section class="sec" id="about">
+      <div class="wrap about">
+        <div class="portrait-wrap" data-reveal>
+          <svg class="blob" viewBox="0 0 200 200" aria-hidden="true"><defs><linearGradient id="bg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a6c2f2"/><stop offset=".55" stop-color="#f3d5a5"/><stop offset="1" stop-color="#a3f5d6"/></linearGradient></defs><path fill="url(#bg1)" d="M41.6 -61.4c13.5 8.600 22.700 24.100 31.200 39.600 8.500 15.500 16.300 31 11.200 41.700-5.100 10.700-23.100 16.600-39.200 22.600-16.100 6-30.300 12.100-43.500 8.200-13.200-3.900-25.300-17.800-33-33.500-7.700-15.700-10.900-33.200-4.600-47.300 6.300-14.100 22-24.800 38.400-31.800 16.400-7 33.500-10.300 39.500-4.500z" transform="translate(100 100) scale(1.05)"/></svg>
+          <figure class="portrait glass">
+            <img src="assets/img/manish.jpg" alt="Manish Verma" onerror="this.remove()">
+            <span>MV</span>
+          </figure>
+          <span class="stk k1"><i data-ico="bulb"></i>Aspiring Product Manager</span>
+          <span class="stk k2"><i data-ico="rocket"></i>Release Manager</span>
+          <span class="deco d6" aria-hidden="true"></span>
+        </div>
+        <div class="about-copy">
+          <h2 class="about-hi" id="hi"></h2>
+          <div id="aboutText"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section class="sec" id="projects">
+      <div class="wrap">
+        <h2 class="h-sec center" data-reveal>Projects</h2>
+        <p class="script sub center" data-reveal>case studies</p>
+        <div id="projFlow"></div>
+        <div id="cases" class="pgrid"></div>
+      </div>
+    </section>
+
+    <!-- AUTOMATIONS -->
+    <section class="sec" id="automations">
+      <div class="wrap">
+        <h2 class="h-sec center" data-reveal>Automations</h2>
+        <p class="script sub center" data-reveal>workflows that work for me</p>
+        <div id="autos" class="autos"></div>
+      </div>
+    </section>
+
+    <!-- SKILLS (hidden for now: delete this line and the closing arrow below to bring it back)
+    <section class="sec" id="skills">
+      <div class="wrap skills">
+        <div>
+          <h2 class="h-sec" data-reveal>Certifications</h2>
+          <div id="certList" class="certs"></div>
+        </div>
+        <div>
+          <h2 class="h-sec" data-reveal>Toolkit</h2>
+          <div id="tools" class="tools"></div>
+        </div>
+      </div>
+    </section>
+    -->
+
+    <!-- OFF THE CLOCK (photos come from "gallery" in data/site.js) -->
+    <section class="sec" id="life">
+      <div class="wrap">
+        <h2 class="h-sec center" data-reveal>Off the clock</h2>
+        <p class="script sub center" data-reveal>places that reset me</p>
+        <div id="snaps" class="snaps"></div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="sec contact" id="contact">
+      <div class="wrap">
+        <div class="socials" data-reveal>
+          <a id="liBtn" href="#" target="_blank" rel="noopener" aria-label="LinkedIn" hidden>
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9.75h4V21H3zM9.5 9.75h3.8v1.55h.06c.53-1 1.82-2.05 3.75-2.05 4 0 4.74 2.63 4.74 6.05V21h-4v-5.1c0-1.22-.02-2.78-1.7-2.78-1.7 0-1.96 1.32-1.96 2.69V21h-4z"/></svg>
+          </a>
+          <a id="mailIcon" href="#" aria-label="Email">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg>
+          </a>
+        </div>
+        <div class="touch glass" data-reveal>
+          <svg class="plane" viewBox="0 0 120 80" fill="none" aria-hidden="true"><path d="M4 74C20 74 24 40 48 44s20 22 38-4 18-28 22-30" stroke="#e0961f" stroke-width="2" stroke-linecap="round" stroke-dasharray="2 7"/><g transform="translate(96 4) rotate(18)"><path d="M0 8 22 0 14 22 10 12z" fill="#2066df"/><path d="M10 12 22 0" stroke="#fff" stroke-width="1.5"/></g></svg>
+          <span class="deco d7"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c.8 6.6 4.4 10.2 12 12-7.6 1.8-11.2 5.4-12 12-.8-6.6-4.4-10.2-12-12C7.6 10.2 11.2 6.6 12 0z"/></svg></span>
+          <h2 class="touch-title">GET IN TOUCH!</h2>
+          <a id="resumeBtn" class="cv" href="#" target="_blank" rel="noopener" hidden><span class="pill" id="resumeLabel"></span><small>click to see the resume</small></a>
+          <figure class="polaroid" aria-hidden="true">
+            <div class="ph"><img src="assets/img/manish-contact.jpg" alt="" onerror="this.remove()"><span>MV</span></div>
+          </figure>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer"></footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+  <script src="data/site.js"></script>
+  <script src="data/case-studies.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

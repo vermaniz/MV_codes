@@ -836,5 +836,345 @@ window.CASES = [
     },
 
     prototypes: []
+  },
+  {
+    id: "linkedin",
+    title: "LinkedIn",
+    type: "Career management",
+    icon: "briefcase",
+    logo: "assets/img/logos/linkedin.png",
+    tags: ["Feature design", "System architecture", "Working prototype"],
+    oneLiner: "Saved posts are one flat list and applied jobs are passive. I designed Saved Collections and an Application Tracker that turn saving into acting.",
+    cover: "",
+
+    problem: {
+      label: "The problems I worked on",
+      statement: "LinkedIn is where careers are searched, but not managed. Saved posts drop into one flat list, so interview questions, product ideas and career advice mix together and are never found again. Applied jobs are a passive list, so after 10 to 20 applications members track status in spreadsheets and miss the best moment to follow up.",
+      goal: "Turn LinkedIn's passive lists into something members can organise and act on, from saving to acting.",
+      because: [
+        ["Big enough to matter", "Over a billion members, so even a small gap affects a very large audience."],
+        ["Spotted from real use", "Weekly use for learning and job search is how I found both gaps."],
+        ["Reaches the highest-intent users", "Active job seekers are the product's highest-intent users, and learners use Save as a reference library."]
+      ],
+      personas: [
+        ["Gap 1", "Saved posts is one flat list", "Tapping Save drops a post into a single reverse-chronological list, with no folders and no private notes. Felt by job seekers, students and anyone using LinkedIn as a learning feed."],
+        ["Gap 2", "Applied jobs is a passive list", "The Applied tab lists jobs with “applied X days ago”, with no stages of your own and no reminders. Felt by active job seekers managing many applications at once."]
+      ]
+    },
+
+    // sizing facts come from the deck; the last three tiles are the design targets from the requirements
+    metrics: [
+      { n: 1, suffix: "B+", label: "members on LinkedIn", note: "So even a small gap affects a very large audience" },
+      { n: 4, suffix: "", label: "surfaces in one product", note: "Feed, jobs, messaging and learning" },
+      { n: 20, suffix: "", label: "collections per member", note: "Names are unique and up to 40 characters" },
+      { n: 7, suffix: "", label: "days until a follow-up nudge, by default", note: "Members can choose 3, 7 or 14 days" },
+      { n: 300, suffix: "", label: "milliseconds, the response target for saving a post", note: "Design target, p95. The saved page loads in under 1 second" },
+      { n: 99.95, dec: 2, suffix: "%", label: "availability target for save and tracker reads", note: "If the new services fail, Save still works" }
+    ],
+
+    insights: [
+      ["Saving is not the same as finding", "A flat saved list becomes unusable beyond a few dozen posts. Folders and a private note let members file a post for a reason and search for it later."],
+      ["Job seekers manage applications outside LinkedIn", "After 10 to 20 applications, status lives in spreadsheets. A board with their own stages keeps it where the applications already are."],
+      ["Nudge, don't automate", "Follow-ups are drafted but never sent automatically, there is one nudge per application, and Snooze stops repeats. That helps members without spamming recruiters."],
+      ["Private by design", "Collections, notes and application stages stay private to the member, are checked on every read, and never feed ads or recruiter views."]
+    ],
+
+    feature: {
+      name: "Saved Collections + Application Tracker",
+      tagline: "From saving to acting.",
+      body: "Two features share one idea. Saved Collections lets members organise saved posts into named collections with a private note on each. The Application Tracker puts every application on a board, reminds members when to follow up, and drafts the message.",
+      points: [
+        "Collections: up to 20 per member, a post can sit in several, and deleting a collection never deletes posts. Search covers author, post text and your own note",
+        "Tracker: every Easy Apply creates a card in Applied, which members move through Interviewing, Offer and Closed, by drag or by menu",
+        "Nudges: after 7 days without an update, the tracker and the bell say “Time to follow up?”, and Draft follow-up pre-fills a message the member edits before sending"
+      ],
+      mock: {
+        label: "Prototype screen: the application tracker with follow-up nudges",
+        caption: "From the working prototype: two applications need a follow-up, and the board shows Applied, Interviewing, Offer and Closed.",
+        html: '<img src="assets/img/linkedin-tracker.png" alt="Application tracker board with a follow-up banner" loading="lazy">'
+      },
+      shots: [
+        { title: "Feature 1: Saved Collections, save, file, find", items: [
+          { src: "assets/img/linkedin-feed-menu.png", cap: "1. Save from the post menu. The new “Add to collection” entry appears once a post is saved." },
+          { src: "assets/img/linkedin-collect.png", cap: "2. Pick collections and add a note. Create a new collection inline, with validation." },
+          { src: "assets/img/linkedin-saved.png", cap: "3. Browse and search. A collections sidebar with counts, notes and chips on every saved post." }
+        ] },
+        { title: "Feature 2: Application Tracker, apply, track, follow up", items: [
+          { src: "assets/img/linkedin-jobs.png", cap: "1. Easy Apply. Duplicate applications are blocked and closed jobs are disabled." },
+          { src: "assets/img/linkedin-tracker.png", cap: "2. Board with nudges. Drag cards between stages. A banner lists applications that need a follow-up." },
+          { src: "assets/img/linkedin-draft.png", cap: "3. Draft follow-up. An editable message to the recruiter, to copy or send." }
+        ] }
+      ],
+      journeys: [
+        {
+          title: "Flow 1: save a post to a collection",
+          note: "If the Collections service is down, the save still lands in the existing Saved store and filing is retried.",
+          steps: [
+            ["Member", "Taps ⋯, then Save, on a feed post."],
+            ["Feed UI", "Calls POST /saved-posts with the post ID."],
+            ["Collections service", "Stores the item in Unsorted and returns in under 300 ms."],
+            ["Toast", "“Post saved · Add to collection”."],
+            ["Collections service", "Validates the name and limit, links the post to folders, saves the note."],
+            ["Saved page", "Reads by collection and searches author, text and note."]
+          ]
+        },
+        {
+          title: "Flow 2: track an application and follow up",
+          note: "A JobClosed event moves the entry to Closed with a reason. Snooze or a sent follow-up stops repeat nudges.",
+          steps: [
+            ["Member", "Taps Easy Apply and submits."],
+            ["Jobs service", "Stores the application and publishes ApplicationSubmitted."],
+            ["Tracker service", "Creates an entry in Applied and blocks duplicates."],
+            ["Scheduler", "A daily scan finds due reminders or 7 idle days, and publishes FollowUpDue."],
+            ["Notifications", "Bell, push or email: “Time to follow up?”."],
+            ["Draft and send", "A pre-filled message goes via Messaging. The member moves the stage."]
+          ]
+        }
+      ]
+    },
+
+    research: {
+      title: "Case study deck",
+      note: "The whole assignment in one deck: the product choice, the tech stack, the two features, requirements, architecture, the prototype and the rollout.",
+      docs: [
+        { tag: "Deck", title: "Saved Collections and Application Tracker", pdf: "assets/pdfs/linkedin-deck.pdf", note: "Extend a Real Product, HelloPM Tech Cohort 19. From the gaps in LinkedIn today to two features, with functional and non-functional requirements, architecture and a working prototype.", has: ["Product choice", "Tech stack", "Functional requirements", "Non-functional requirements", "Architecture and flows", "Prototype"] }
+      ]
+    },
+
+    prd: {
+      title: "Requirements and design",
+      note: "What each feature must do, how it fits into LinkedIn's existing system, and how success would be measured.",
+      goal: "Turn saved posts and applied jobs into lists members can organise and act on.",
+      metrics: [
+        ["Collections", "Collection creation rate", "Share of savers who create a collection"],
+        ["Collections", "Saved-item revisit rate", "How often members come back to what they saved"],
+        ["Tracker", "Follow-up sent rate", "Share of applications with a follow-up sent"],
+        ["Tracker", "Interview rate per application", "How many applications reach the interview stage"],
+        ["Tracker", "Weekly return rate of job seekers", "Whether the tracker brings active job seekers back each week"]
+      ],
+      risksTitle: "Risks and guardrails",
+      risks: [
+        ["Notification fatigue", "Cap one nudge per application and make Snooze easy."],
+        ["Recruiter spam", "Messages are drafted, never auto-sent."],
+        ["Privacy", "Notes and stages stay private to the member."]
+      ],
+      extras: [
+        { title: "Saved Collections: requirements", items: [
+          ["FR-1", "Up to 20 collections, with unique names up to 40 characters."],
+          ["FR-2", "Saving a post shows a toast with Add to collection. A post can be in several collections, or stay in Unsorted."],
+          ["FR-3", "The saved page lists posts by collection with counts, and searches author, post text and your note."],
+          ["FR-4", "A private note of up to 280 characters on any saved post."],
+          ["FR-5", "Rename or delete a collection. Deleting never deletes posts."],
+          ["FR-6", "Unsave removes the post from all collections, with a 5-second Undo."]
+        ] },
+        { title: "Application Tracker: requirements", items: [
+          ["FR-1", "Every Easy Apply creates a tracker entry in Applied, with the date."],
+          ["FR-2", "Move entries across Applied, Interviewing, Offer and Closed by drag or menu. Stage history is kept."],
+          ["FR-3", "A follow-up reminder with future dates only, suggested at 7 days."],
+          ["FR-4", "A nudge in the tracker and the bell after 7 days without an update (3, 7 or 14, member's choice)."],
+          ["FR-5", "Draft follow-up pre-fills a message. The member edits, then copies or sends. Nothing sends automatically."],
+          ["FR-6", "When the employer closes a posting, the entry moves to Closed with the reason. Private notes of up to 500 characters."]
+        ] },
+        { title: "Quality goals", items: [
+          ["Performance", "Save and add-to-collection under 300 ms (p95). The saved page loads in under 1 second, 25 items at a time."],
+          ["Scalability", "Data partitioned by member ID. No fan-out writes."],
+          ["Availability", "99.95% for save and tracker reads, and Save still works if the new services fail."],
+          ["Security and privacy", "Private to the member, checked on every read, encrypted at rest. Notes never feed ads or recruiter views."],
+          ["Reliability", "Reminders are delivered at least once and de-duplicated per application per day. Stage changes are idempotent and audit-logged."],
+          ["Accessibility", "WCAG 2.1 AA. The board works by keyboard, with a Move to menu."]
+        ] },
+        { title: "Existing tech stack", items: [
+          ["Frontend", "Ember.js with TypeScript, plus native iOS and Android apps (Swift, Kotlin)."],
+          ["Backend", "Java with Rest.li."],
+          ["Data", "Espresso for member data and Apache Pinot for real-time analytics."],
+          ["Streaming", "Apache Kafka and Apache Samza."],
+          ["Cloud and delivery", "Microsoft Azure and a CDN at licdn.com."]
+        ] },
+        { title: "Where the new features fit", items: [
+          ["New services", "Collections Service, Application Tracker Service and a Reminder Scheduler."],
+          ["Events", "Consume PostDeleted, JobClosed and ApplicationSubmitted from Kafka, and publish a new FollowUpDue event."],
+          ["Data", "New Espresso tables: collections, saved_post_items, applications, app_events and reminders, private per member."],
+          ["Delivery", "The Notification Service pushes “Time to follow up?” to the bell, push and email."]
+        ] },
+        { title: "Rollout", items: [
+          ["Phase 1", "5% of members, Collections only."],
+          ["Phase 2", "The Tracker for active job seekers."],
+          ["Phase 3", "All members, with an A/B test on nudge timing."]
+        ] }
+      ]
+    },
+
+    prototypeNote: "A working single-page prototype that reproduces LinkedIn's layout and components. Data is saved in your browser, and the Reset demo data link restores the starting state.",
+    prototypes: [{ name: "LinkedIn prototype", icon: "briefcase", url: "prototypes/linkedin/index.html", note: "Click ⋯ on any post, then Save and Add to collection. Open My jobs for the tracker, or the bell for the nudge." }]
+  },
+  {
+    id: "swiggy",
+    title: "Swiggy",
+    type: "Order with confidence",
+    icon: "bike",
+    logo: "assets/img/logos/swiggy.png",
+    tags: ["Feature design", "System architecture", "Working prototype"],
+    oneLiner: "Diet needs are re-checked on every order and spending is invisible until month end. I designed Food Rules and Food Budget so members order with confidence.",
+    cover: "",
+
+    problem: {
+      label: "The problems I worked on",
+      statement: "Swiggy is great at finding food, less so at fitting it to you. Needs like Jain, no onion or garlic, or nut allergies are not remembered, so members read every description, or call the restaurant, on every order. And spending is invisible until the month ends, so frequent orderers are surprised by their total and cut back only after overspending.",
+      goal: "Help members order food that suits them and fits their wallet, without leaving the app.",
+      because: [
+        ["A repeat-usage product", "Removing friction compounds with every order."],
+        ["Five touchpoints", "Each feature crosses home, menu, cart, checkout and notifications."],
+        ["Spotted from real use", "Weekly ordering is how I noticed both gaps."]
+      ],
+      personas: [
+        ["Gap 1", "Diet needs are checked dish by dish", "A Veg toggle and a Pure Veg filter are the main tools. Jain, no onion or garlic, or nut allergies are not remembered. Felt by Jain and vegan members, people with allergies, and families ordering for them."],
+        ["Gap 2", "Spending is invisible until the month ends", "Order history lists past orders, but nothing shows how an order affects your monthly food spend. Felt by students, young professionals and anyone ordering several times a week."]
+      ]
+    },
+
+    // the 87% tile is the sample order from the prototype; the last two tiles are design targets from the requirements
+    metrics: [
+      { n: 5, suffix: "", label: "touchpoints each feature crosses", note: "Home, menu, cart, checkout and notifications" },
+      { n: 7, suffix: "", label: "ingredients members can choose to avoid", note: "Onion, garlic, nuts, dairy, gluten, soy and sesame, alongside five diets" },
+      { n: 3, suffix: "", label: "suitable dishes a restaurant needs to be shown", note: "Fewer than 3 and it is hidden or flagged, the member's choice" },
+      { n: 87, suffix: "%", label: "of budget used after the sample ₹527 order", note: "Example from the prototype: 78% before, and an amber heads-up after" },
+      { n: 50, suffix: "", label: "milliseconds, the most rule checking adds to a listing", note: "Design target, p95, using cached rules" },
+      { n: 99.95, dec: 2, suffix: "%", label: "availability target, and both features fail open", note: "If they are down, ordering works as normal" }
+    ],
+
+    insights: [
+      ["Set diet rules once", "Members re-check dishes by hand on every order. A saved profile of diet and avoided ingredients filters restaurants and flags every dish."],
+      ["Unknown is never safe", "A dish with no ingredient data is never marked as a match, and the app says matches may be incomplete and to confirm severe allergies with the restaurant."],
+      ["Show the cost before it happens", "The cart shows what this order does to the monthly budget, for example 78% to 87%, before payment, so members can trim the cart or place it anyway."],
+      ["Never block an order", "The heads-up warns but never blocks, and both features fail open, so a failure can't cost an order."]
+    ],
+
+    feature: {
+      name: "Food Rules + Food Budget",
+      tagline: "Order food that suits you and fits your wallet.",
+      body: "My Food Rules is a saved profile that filters restaurants and flags every dish as a match, modifiable or a conflict. Food Budget sets a monthly budget with a progress bar, shows what each order does to it in the cart, and projects the month end.",
+      points: [
+        "Food Rules: set a diet (Anything, Vegetarian, Eggetarian, Vegan or Jain) and avoided ingredients once. Each dish then shows Matches, Can be made without X, Contains X, or No allergen info",
+        "A conflicting dish asks for confirmation. A modifiable dish adds a note to the order, such as “No onion, garlic”",
+        "Food Budget: a budget impact card in the cart turns green, amber or red, and the Budget page shows weekly spend, top restaurants and a month-end projection"
+      ],
+      mock: {
+        label: "Prototype screen: the budget impact card in the cart",
+        caption: "From the working prototype: a ₹527 cart moves the November budget from 78% to 87%, with an amber heads-up.",
+        html: '<img src="assets/img/swiggy-cart.png" alt="Cart with a food budget impact card showing 78% to 87%" loading="lazy">'
+      },
+      shots: [
+        { title: "Feature 1: My Food Rules, set once, see matches everywhere", items: [
+          { src: "assets/img/swiggy-rules.png", cap: "1. Set your rules. Diet, ingredients to avoid, and what to do with weak matches." },
+          { src: "assets/img/swiggy-home.png", cap: "2. Filtered home. “5 of 8 restaurants match”, with a match count on each card." },
+          { src: "assets/img/swiggy-menu.png", cap: "3. Dish badges. Match, can be made without, or contains. Conflicts ask to confirm." }
+        ] },
+        { title: "Feature 2: Food Budget, set, see the impact, stay in control", items: [
+          { src: "assets/img/swiggy-budgetset.png", cap: "1. Set a budget. An amount, plus when to warn at 70, 80 or 90%. Validated inline." },
+          { src: "assets/img/swiggy-cart.png", cap: "2. Impact in the cart. 78% to 87%, an amber heads-up, and a hatched bar for this order." },
+          { src: "assets/img/swiggy-budget.png", cap: "3. Insights. Projection, safe daily spend, weekly bars and orders." }
+        ] }
+      ],
+      journeys: [
+        {
+          title: "Flow 1: filter restaurants and dishes by Food Rules",
+          note: "If the Food Rules service is slow or down, the listing renders unfiltered after a 100 ms timeout. MenuUpdated events refresh dish tags.",
+          steps: [
+            ["Member", "Saves rules, for example Jain and no nuts."],
+            ["Food Rules service", "Stores the rules and caches them in Redis per member."],
+            ["Discovery service", "Fetches restaurants and asks for batch match counts."],
+            ["Evaluate", "Compares dish tags with the rules, and hides or flags weak matches."],
+            ["Menu service", "Returns dishes with a badge: match, modify, conflict or unknown."],
+            ["Cart", "A conflict asks to confirm. A modifiable dish adds a note to the order."]
+          ]
+        },
+        {
+          title: "Flow 2: budget impact at checkout",
+          note: "OrderCancelled reduces the ledger. If the Budget service is down, checkout skips the card and the order goes ahead.",
+          steps: [
+            ["Member", "Opens a cart with ₹527 of items."],
+            ["Checkout service", "Computes the bill and calls the Budget service with the total."],
+            ["Budget service", "Reads month-to-date spend and returns the percentage before, after and the level."],
+            ["Cart UI", "Shows the card: 78% to 87%, amber. Over 100% asks to confirm."],
+            ["Order service", "Places the order and publishes OrderPlaced."],
+            ["Ledger", "Appends once per order ID. Crossing 80% sends a push."]
+          ]
+        }
+      ]
+    },
+
+    research: {
+      title: "Case study deck",
+      note: "The whole assignment in one deck: the product choice, the tech stack, the two features, requirements, architecture, the prototype and the rollout.",
+      docs: [
+        { tag: "Deck", title: "Food Rules and Food Budget", pdf: "assets/pdfs/swiggy-deck.pdf", note: "Extend a Real Product, HelloPM Tech Cohort 19. From the gaps in Swiggy today to two features, with functional and non-functional requirements, architecture and a working prototype.", has: ["Product choice", "Tech stack", "Functional requirements", "Non-functional requirements", "Architecture and flows", "Prototype"] }
+      ]
+    },
+
+    prd: {
+      title: "Requirements and design",
+      note: "What each feature must do, how it fits into Swiggy's existing system, and how success would be measured.",
+      goal: "Help members order food that suits them and fits their wallet, without leaving the app.",
+      metrics: [
+        ["Food Rules", "Rules saved", "Share of members who save Food Rules"],
+        ["Food Rules", "Cancellations and “wrong item” complaints", "Whether fewer orders go wrong on diet needs"],
+        ["Food Rules", "Conversion on matching dishes", "Whether badges help members add dishes with confidence"],
+        ["Food Budget", "Budgets set", "Share of members who set a monthly budget"],
+        ["Food Budget", "Carts changed after an amber heads-up", "Whether the heads-up changes what members order"],
+        ["Food Budget", "30-day retention", "Whether the budget keeps members ordering"]
+      ],
+      risksTitle: "Risks and guardrails",
+      risks: [
+        ["Wrong allergen data", "Unknown is never a match, and there is a clear disclaimer."],
+        ["Lost revenue", "The heads-up never blocks an order."],
+        ["Privacy", "Diet and spend data stay private to the member."]
+      ],
+      extras: [
+        { title: "My Food Rules: requirements", items: [
+          ["FR-1", "Set a diet and avoided ingredients: onion, garlic, nuts, dairy, gluten, soy and sesame."],
+          ["FR-2", "Home shows a Food Rules chip and match counts, and hides or flags restaurants with fewer than 3 suitable dishes."],
+          ["FR-3", "Each dish gets a badge: Matches, Can be made without X (with a note added), Contains X, or No allergen info."],
+          ["FR-4", "Adding a conflicting dish asks for confirmation, and the cart warns about conflicts."],
+          ["FR-5", "Rules can be switched off or edited at any time. Dishes without ingredient data are never marked as a match."]
+        ] },
+        { title: "Food Budget: requirements", items: [
+          ["FR-1", "A monthly budget from ₹500 to ₹1,00,000, resetting on the 1st of each month."],
+          ["FR-2", "Home shows spent against budget, the percentage used and a safe daily amount."],
+          ["FR-3", "The cart shows a budget impact card with the percentage before and after, in green, amber or red."],
+          ["FR-4", "Past the member's threshold (70, 80 or 90%) the card turns amber. Over budget asks to confirm. Orders are never blocked."],
+          ["FR-5", "The Budget page shows weekly spend, top restaurants, orders and a month-end projection."]
+        ] },
+        { title: "Quality goals", items: [
+          ["Performance", "Rule evaluation adds under 50 ms (p95) to the listing. Budget impact returns in under 150 ms at checkout."],
+          ["Scalability", "Built for dinner-time and match-day peaks. Evaluation is stateless, and the spend ledger is partitioned by member ID."],
+          ["Availability", "99.95%, and both features fail open."],
+          ["Security and privacy", "Diet, allergen and spend data are private to the member, encrypted, never shared with restaurants, riders or ads, and deletable on request."],
+          ["Correctness", "The spend ledger is idempotent per order ID, and refunds and cancellations adjust it. Unknown ingredients are never shown as safe."],
+          ["Accessibility", "WCAG 2.1 AA. Status uses icon and text, not colour alone. Regional languages and ₹ formatting."]
+        ] },
+        { title: "Existing tech stack", items: [
+          ["Frontend", "React for the web, and native Android and iOS apps (Kotlin, Swift)."],
+          ["Backend", "Java with Spring Boot, and Go."],
+          ["Data", "Amazon DynamoDB, Redis for caching, and Snowflake with Hive for analytics."],
+          ["Streaming", "Apache Kafka (Confluent)."],
+          ["Cloud and delivery", "AWS (EKS, EC2, ELB, Route 53) and Amazon CloudFront."],
+          ["Evidence", "Kafka and Snowflake are confirmed from Swiggy talks and engineering posts. The rest is reported or estimated, as marked in the deck."]
+        ] },
+        { title: "Where the new features fit", items: [
+          ["New services", "A Food Rules Service and a Budget Service, called by Discovery, Menu and Checkout."],
+          ["Events", "Consume OrderPlaced, OrderCancelled and MenuUpdated from Kafka, and publish a new BudgetThresholdCrossed event."],
+          ["Data", "New DynamoDB tables: food_rules, dish_tags, budgets and spend_ledger, private per member. Redis caches rules and dish tags on the hot path."],
+          ["Delivery", "The Notification Service pushes “You have used 80% of your food budget”."]
+        ] },
+        { title: "Rollout", items: [
+          ["Phase 1", "Food Rules for Jain and vegan members in one city."],
+          ["Phase 2", "Budget for frequent orderers."],
+          ["Phase 3", "All members, with an A/B test on the heads-up threshold."]
+        ] }
+      ]
+    },
+
+    prototypeNote: "A working single-page prototype that reproduces Swiggy's layout and components. Data is saved in your browser, and the Reset demo data link restores the starting state.",
+    prototypes: [{ name: "Swiggy prototype", icon: "bike", url: "prototypes/swiggy/index.html", note: "Click Food Rules in the header, then open Spice Route Kitchen. Add dishes, open the Cart and press Proceed to pay to see the budget impact." }]
   }
 ];

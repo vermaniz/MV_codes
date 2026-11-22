@@ -1,0 +1,492 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Order food online from restaurants near you | Swiggy</title>
+<style>
+:root{--or:#fc8019;--or-d:#e5700f;--gr:#60b246;--gr-d:#24963f;--ink:#02060c;--t2:#686b78;--t3:#93959f;--line:#e9e9eb;--bg:#f1f1f6;--red:#e0442f;--amb:#f5a623}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;color:var(--ink);background:#fff;-webkit-font-smoothing:antialiased;font-size:16px}
+a{color:inherit;text-decoration:none;cursor:pointer}
+button{font:inherit;cursor:pointer}
+svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+#hdr{position:sticky;top:0;z-index:50;background:#fff;box-shadow:0 15px 40px -20px rgba(40,44,63,.15)}
+.hd{max-width:1280px;margin:0 auto;height:80px;display:flex;align-items:center;gap:24px;padding:0 20px}
+.lgo{display:flex;align-items:center;gap:6px;color:var(--or);font-weight:800;font-size:28px;letter-spacing:-1px}
+.lgo i{font-style:normal;width:38px;height:38px;border-radius:12px 12px 12px 4px;background:var(--or);color:#fff;font-size:22px;display:flex;align-items:center;justify-content:center;letter-spacing:0}
+.loc{font-size:14px;color:var(--t2);display:flex;gap:8px;align-items:center;cursor:pointer;max-width:170px;white-space:nowrap;overflow:hidden}.loc span{overflow:hidden;text-overflow:ellipsis}
+.loc b{color:var(--ink);border-bottom:2px solid var(--ink);padding-bottom:1px}
+.nav{margin-left:auto;display:flex;gap:24px;align-items:center;white-space:nowrap}
+.nav a,.nav button{display:flex;align-items:center;gap:9px;font-weight:500;color:#3d4152;font-size:16px;background:none;border:0;position:relative}
+.nav a:hover,.nav button:hover{color:var(--or)}
+.nav .on{color:var(--or)}
+.nav .cnt{position:absolute;left:8px;top:-2px;font-size:11px;font-weight:700;color:var(--gr);width:100%;text-align:center}
+.new{background:var(--gr);color:#fff;border-radius:4px;font-size:10px;font-weight:700;padding:1px 5px;letter-spacing:.04em}
+.wrap{max-width:1200px;margin:0 auto;padding:24px 20px 120px}
+h2.t{font-size:24px;font-weight:800;margin:24px 0 16px;letter-spacing:-.4px}
+hr{border:0;border-top:1px solid var(--line);margin:28px 0 0}
+/* budget banner */
+.bb{border:1px solid var(--line);border-radius:16px;padding:16px 22px;display:flex;gap:28px;align-items:center;background:linear-gradient(90deg,#fff7ef,#fff);cursor:pointer}
+.bb:hover{box-shadow:0 4px 18px rgba(40,44,63,.08)}
+.bb .l{min-width:210px} .bb .l small{display:block;color:var(--t2);font-size:13px}
+.bb .l b{font-size:22px}
+.bbar{flex:1}
+.pb{height:12px;border-radius:8px;background:#ececf0;overflow:hidden;display:flex}
+.pb .s{background:var(--gr)} .pb .s.amber{background:var(--amb)} .pb .s.red{background:var(--red)}
+.pb .a{background:repeating-linear-gradient(45deg,var(--or),var(--or) 4px,#ffb26b 4px,#ffb26b 8px)}
+.bbar .sub{display:flex;justify-content:space-between;font-size:13px;color:var(--t2);margin-top:6px}
+.link{color:var(--or);font-weight:700;font-size:14px}
+.cta{border:2px dashed #f2c39a;background:#fffaf5}
+/* cuisines */
+.cu{display:flex;gap:22px;overflow:hidden}
+.cu div{text-align:center;font-weight:600;color:var(--t2);font-size:14px}
+.cu span{display:flex;width:112px;height:112px;border-radius:50%;background:#fff3e6;align-items:center;justify-content:center;font-size:54px;margin-bottom:6px}
+/* chips */
+.chips{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.chip{border:1px solid #d9d9dc;border-radius:22px;padding:9px 16px;font-size:14px;color:#3d4152;background:#fff;display:inline-flex;align-items:center;gap:6px;box-shadow:0 2px 4px rgba(0,0,0,.05)}
+.chip.fr{border-color:var(--or);background:#fff4ea;color:var(--or-d);font-weight:700}
+.chip.fr b{font-weight:800}
+.cnt-line{color:var(--t2);font-size:14px;margin:4px 0 16px;display:flex;gap:10px;align-items:center}
+/* restaurant grid */
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px 28px}
+.rc{cursor:pointer;transition:transform .15s}.rc:hover{transform:scale(.97)}
+.rc .im{height:182px;border-radius:16px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:76px}
+.rc .im:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(27,30,36,0) 45%,rgba(27,30,36,.85))}
+.rc .of{position:absolute;left:12px;bottom:8px;z-index:2;color:#fff;font-size:19px;font-weight:800;letter-spacing:-.4px;text-transform:uppercase}
+.rc h3{margin:12px 0 2px;font-size:18px;font-weight:700;letter-spacing:-.3px}
+.rc .rt{font-weight:700;display:flex;gap:6px;align-items:center;font-size:16px}
+.star{width:20px;height:20px;border-radius:50%;background:var(--gr-d);display:inline-flex;align-items:center;justify-content:center}
+.star svg{width:11px;height:11px;fill:#fff;stroke:none}
+.rc .cs{color:var(--t2);font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mt{display:inline-block;margin-top:6px;border-radius:6px;padding:2px 8px;font-size:12px;font-weight:700}
+.mt.g{background:#e8f6e3;color:var(--gr-d)} .mt.a{background:#fff2d9;color:#9a6200}
+/* restaurant page */
+.rp{max-width:800px;margin:0 auto;padding:24px 20px 140px}
+.crumb{font-size:12px;color:var(--t3);margin-bottom:18px}.crumb a:hover{color:var(--ink)}
+.rp h1{font-size:24px;margin:0 0 14px;font-weight:800;letter-spacing:-.5px}
+.box{border:1px solid var(--line);border-radius:20px;padding:14px 18px;background:linear-gradient(180deg,#fff,#f6f6f8);box-shadow:0 6px 16px rgba(40,44,63,.06)}
+.box .r1{font-weight:800;display:flex;gap:6px;align-items:center;font-size:16px}
+.box .r2{color:var(--t2);font-size:14px;margin-top:6px}
+.fr-strip{margin:18px 0;border-radius:14px;border:1px solid #f6d3b2;background:#fff7ee;padding:12px 16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.fr-strip .tx{flex:1;min-width:240px;font-size:14px}.fr-strip b{font-weight:800}
+.sw{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--t2);cursor:pointer;user-select:none}
+.sw i{width:34px;height:20px;border-radius:12px;background:#c7c7cc;position:relative;transition:.15s}
+.sw i:after{content:"";position:absolute;left:2px;top:2px;width:16px;height:16px;border-radius:50%;background:#fff;transition:.15s}
+.sw.on i{background:var(--gr)} .sw.on i:after{left:16px}
+.menu-h{font-size:18px;font-weight:800;margin:22px 0 4px}
+.mi{display:flex;justify-content:space-between;gap:16px;padding:20px 0;border-bottom:1px solid var(--line)}
+.mi.bad .tx{opacity:.62}
+.vi{width:16px;height:16px;border:1.5px solid var(--gr-d);display:inline-flex;align-items:center;justify-content:center;border-radius:3px;margin-bottom:6px}
+.vi:after{content:"";width:8px;height:8px;border-radius:50%;background:var(--gr-d)}
+.vi.nv{border-color:#b9341f}.vi.nv:after{background:#b9341f}
+.vi.eg{border-color:#c68a00}.vi.eg:after{background:#c68a00}
+.mi .nm{font-size:16px;font-weight:600;color:#3e4152}
+.mi .pr{font-size:14px;font-weight:600;margin:2px 0 8px}
+.mi .ds{font-size:14px;color:var(--t2);line-height:1.4;max-width:520px}
+.bd{display:inline-flex;align-items:center;gap:5px;border-radius:6px;padding:3px 8px;font-size:12px;font-weight:700;margin-top:8px}
+.bd.ok{background:#e8f6e3;color:var(--gr-d)} .bd.mod{background:#e4effb;color:#1c5fa8} .bd.bad{background:#fde8e4;color:#b9341f} .bd.unk{background:#eee;color:#666}
+.mi .pic{position:relative;width:118px;flex:none;text-align:center}
+.mi .pic .ph{width:118px;height:96px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:48px;background:#fff1e3}
+.add{position:absolute;left:11px;bottom:-16px;width:96px;height:36px;border-radius:8px;border:1px solid #d4d5d9;background:#fff;color:var(--gr-d);font-weight:800;font-size:15px;box-shadow:0 3px 8px rgba(40,44,63,.12);display:flex;align-items:center;justify-content:space-between;padding:0}
+.add:hover{background:#f0f0f5}
+.add.single{justify-content:center}
+.add span{width:30px;text-align:center;font-size:18px}
+.add b{font-size:15px;color:var(--gr-d)}
+.cbar{position:fixed;left:50%;transform:translateX(-50%);bottom:18px;width:min(800px,94vw);background:var(--gr);color:#fff;border-radius:6px;padding:14px 20px;display:flex;justify-content:space-between;font-weight:700;z-index:40;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.2)}
+/* cart */
+.cart{display:grid;grid-template-columns:1fr 400px;gap:28px;max-width:1100px;margin:0 auto;padding:28px 20px 100px;align-items:start}
+.card{border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin-bottom:16px;background:#fff}
+.card h3{margin:0 0 12px;font-size:18px;font-weight:800}
+.ln{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-top:1px solid var(--line)}
+.ln:first-of-type{border-top:0}
+.ln .n{flex:1;font-size:15px;font-weight:600}.ln .n i{display:block;font-style:normal;color:var(--t2);font-weight:400;font-size:13px;margin-top:2px}
+.stp{display:flex;border:1px solid #d4d5d9;border-radius:6px;overflow:hidden;color:var(--gr-d);font-weight:800}
+.stp button{width:30px;height:30px;border:0;background:#fff;color:var(--gr-d);font-size:18px;font-weight:700}
+.stp button:hover{background:#f0f0f5}.stp span{width:30px;text-align:center;line-height:30px;font-size:14px}
+.bill div{display:flex;justify-content:space-between;font-size:14px;color:#3e4152;padding:5px 0}
+.bill .tot{border-top:2px solid var(--ink);margin-top:8px;padding-top:12px;font-weight:800;font-size:16px;color:var(--ink)}
+.pay{width:100%;background:var(--gr);border:0;color:#fff;font-weight:800;font-size:16px;padding:16px;border-radius:6px;letter-spacing:.02em;margin-top:6px}
+.pay:hover{background:var(--gr-d)}
+.bi{border-radius:12px;padding:16px 18px;margin-bottom:16px;border:1px solid var(--line)}
+.bi.amber{background:#fff8e8;border-color:#f5d99a}.bi.red{background:#fdecea;border-color:#f3b5ab}.bi.green{background:#f1faee;border-color:#cde8c4}
+.bi h4{margin:0 0 8px;font-size:15px;font-weight:800;display:flex;justify-content:space-between;align-items:center}
+.bi p{margin:8px 0 0;font-size:13.5px;color:#3e4152;line-height:1.4}
+.warn{background:#fdecea;border:1px solid #f3b5ab;border-radius:10px;padding:10px 14px;font-size:14px;color:#8d2a1a;margin-bottom:12px}
+/* budget page */
+.bp{max-width:1000px;margin:0 auto;padding:28px 20px 100px}
+.bp h1{font-size:28px;margin:0 0 4px;font-weight:800;letter-spacing:-.6px}
+.k3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:16px 0}
+.kp{border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.kp small{color:var(--t2);font-size:13px;display:block}.kp b{font-size:26px;font-weight:800;letter-spacing:-.5px}.kp i{font-style:normal;font-size:13px;color:var(--t2);display:block;margin-top:2px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.wk{display:flex;align-items:flex-end;gap:14px;height:150px;padding:8px 4px 0}
+.wk div{flex:1;text-align:center;font-size:12px;color:var(--t2)}
+.wk span{display:block;background:var(--or);border-radius:6px 6px 0 0;margin-bottom:4px;min-height:3px}
+.ord{display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);font-size:14px}
+.ord:first-child{border-top:0}.ord small{display:block;color:var(--t2)}
+/* modal */
+#mroot{position:fixed;inset:0;background:rgba(40,44,63,.55);z-index:100;display:none;align-items:center;justify-content:center;overflow:auto;padding:24px}
+#mroot.on{display:flex}
+.modal{background:#fff;border-radius:16px;width:min(520px,96vw);box-shadow:0 20px 50px rgba(0,0,0,.35);max-height:92vh;overflow:auto}
+.mh{display:flex;align-items:center;padding:18px 22px 6px}.mh h2{margin:0;flex:1;font-size:22px;font-weight:800;letter-spacing:-.4px}
+.mx{background:none;border:0;width:36px;height:36px;border-radius:50%;font-size:20px;color:var(--t2)}.mx:hover{background:#f1f1f6}
+.mb{padding:6px 22px 12px}.mf{padding:12px 22px 20px;display:flex;gap:10px}
+.mb h5{margin:16px 0 8px;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--t2);font-weight:800}
+.pillrow{display:flex;gap:8px;flex-wrap:wrap}
+.pill{border:1.5px solid #d4d5d9;background:#fff;border-radius:24px;padding:8px 16px;font-weight:700;font-size:14px;color:#3e4152}
+.pill:hover{border-color:var(--or)}
+.pill.on{border-color:var(--or);background:#fff4ea;color:var(--or-d)}
+.pill.bad.on{border-color:var(--red);background:#fdecea;color:#b9341f}
+.btn{border:0;border-radius:8px;padding:13px 20px;font-weight:800;font-size:15px;flex:1;letter-spacing:.02em}
+.btn.p{background:var(--or);color:#fff}.btn.p:hover{background:var(--or-d)}
+.btn.g{background:#fff;color:var(--or);border:2px solid var(--or)}
+.btn.gr{background:var(--gr);color:#fff}
+.fine{font-size:12.5px;color:var(--t2);line-height:1.4;margin-top:14px;background:#f7f7f9;border-radius:8px;padding:9px 12px}
+.fld input,.fld select{width:100%;border:1.5px solid #d4d5d9;border-radius:8px;padding:12px 14px;font-size:18px;font-weight:700;color:var(--ink)}
+.fld input:focus,.fld select:focus{outline:0;border-color:var(--or)}
+.fld label{display:block;font-size:13px;color:var(--t2);font-weight:700;margin-bottom:6px}
+.err{color:var(--red);font-size:13px;margin-top:6px;font-weight:600}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:84px;background:#282c3f;color:#fff;border-radius:10px;padding:13px 18px;z-index:200;display:none;gap:18px;align-items:center;font-size:14px;box-shadow:0 8px 24px rgba(0,0,0,.3)}
+#toast.on{display:flex}#toast button{background:none;border:0;color:#ffb26b;font-weight:800;font-size:14px}
+#demo{position:fixed;right:12px;bottom:10px;background:#282c3f;color:#fff;border-radius:16px;font-size:11px;padding:5px 12px;z-index:60;opacity:.92}
+#demo a{color:#ffb26b;margin-left:8px;cursor:pointer}
+@media (max-width:980px){.grid{grid-template-columns:repeat(2,1fr)}.cart,.two,.k3{grid-template-columns:1fr}.nav{gap:14px}.nav .lb{display:none}.bb{flex-wrap:wrap}}
+</style>
+</head>
+<body>
+<div id="hdr"></div><div id="app"></div><div id="mroot"></div><div id="toast"></div>
+<div id="demo">Prototype for Tech Cohort 19 assignment · not affiliated with Swiggy <a data-a="reset">Reset demo data</a></div>
+<script>
+/* ================= DATA ================= */
+const LBL={onion:'Onion',garlic:'Garlic',nuts:'Nuts',dairy:'Dairy',gluten:'Gluten',soy:'Soy',sesame:'Sesame',root:'Root vegetables'};
+const AVOID=['onion','garlic','nuts','dairy','gluten','soy','sesame'];
+const DIETS=[['any','Anything'],['veg','Vegetarian'],['egg','Eggetarian'],['vegan','Vegan'],['jain','Jain']];
+const DLBL={any:'Anything',veg:'Vegetarian',egg:'Eggetarian',vegan:'Vegan',jain:'Jain'};
+const m=(name,price,diet,has,desc,e,o={})=>({name,price,diet,has,desc,e,...o});
+const RESTS=[
+ {id:'r1',name:'Spice Route Kitchen',cu:'North Indian, Tandoor',area:'Koramangala',rt:4.4,eta:'30-35',of:'20% OFF UPTO ₹50',bg:'linear-gradient(135deg,#c2410c,#f59e0b)',e:'🍛',items:[
+  m('Paneer Butter Masala',249,'veg',['dairy','onion','garlic','nuts'],'Cottage cheese cubes in a rich, creamy tomato gravy.','🧀',{omit:['onion','garlic']}),
+  m('Dal Tadka',189,'veg',['dairy','onion','garlic'],'Yellow lentils tempered with cumin and ghee.','🥣',{omit:['onion','garlic']}),
+  m('Jeera Rice',149,'vegan',[],'Basmati rice tossed with cumin.','🍚'),
+  m('Butter Chicken',299,'nonveg',['dairy','onion','garlic','nuts'],'Tandoori chicken in a buttery tomato gravy.','🍗'),
+  m('Garlic Naan',59,'veg',['gluten','dairy','garlic'],'Soft tandoor-baked bread topped with garlic.','🫓'),
+  m('Butter Naan',55,'veg',['gluten','dairy'],'Soft tandoor-baked bread brushed with butter.','🫓'),
+  m('Tandoori Roti',29,'vegan',['gluten'],'Whole wheat flatbread from the tandoor.','🫓'),
+  m('Aloo Gobi',179,'vegan',['onion','garlic','root'],'Potato and cauliflower dry curry.','🥔',{omit:['onion','garlic']})]},
+ {id:'r2',name:'Green Bowl Co.',cu:'Healthy Food, Salads',area:'Indiranagar',rt:4.5,eta:'20-25',of:'FREE DELIVERY',bg:'linear-gradient(135deg,#15803d,#86efac)',e:'🥗',items:[
+  m('Quinoa Power Bowl',279,'vegan',[],'Quinoa, roasted veggies, chickpeas, lemon dressing.','🥗'),
+  m('Peanut Satay Tofu Bowl',299,'vegan',['nuts','soy'],'Grilled tofu, greens and peanut satay sauce.','🥜'),
+  m('Caesar Salad',259,'egg',['dairy','egg','gluten'],'Romaine, croutons, parmesan, creamy dressing.','🥬'),
+  m('Avocado Toast',229,'veg',['gluten','dairy'],'Sourdough, smashed avocado, feta.','🥑'),
+  m('Hummus Wrap',219,'vegan',['gluten','sesame'],'Whole wheat wrap with hummus and crunchy veg.','🌯'),
+  m('Fresh Fruit Bowl',149,'vegan',[],'Seasonal cut fruit.','🍉'),
+  m('Greek Yogurt Parfait',169,'veg',['dairy','nuts'],'Yogurt, granola, honey and almonds.','🍨'),
+  m('Cold-pressed Green Juice',129,'vegan',[],'Spinach, apple, cucumber, ginger.','🥤')]},
+ {id:'r3',name:'Dosa Junction',cu:'South Indian, Breakfast',area:'Jayanagar',rt:4.3,eta:'25-30',of:'₹75 OFF ABOVE ₹349',bg:'linear-gradient(135deg,#a16207,#fde68a)',e:'🥞',items:[
+  m('Masala Dosa',119,'vegan',['onion','root'],'Crisp dosa with spiced potato filling.','🥞',{omit:['onion']}),
+  m('Plain Dosa',89,'vegan',[],'Crisp rice and lentil crepe.','🥞'),
+  m('Idli (3 pcs)',79,'vegan',[],'Steamed rice cakes with sambar and chutney.','🍘'),
+  m('Medu Vada',99,'vegan',['onion'],'Crisp lentil doughnuts.','🍩',{omit:['onion']}),
+  m('Filter Coffee',49,'veg',['dairy'],'Strong South Indian filter coffee.','☕'),
+  m('Mysore Masala Dosa',139,'veg',['onion','garlic','root','dairy'],'Dosa with red chutney and potato filling.','🥞'),
+  m('Rava Upma',89,'vegan',['nuts','gluten'],'Semolina porridge with cashews.','🥣'),
+  m('Sambar Rice',129,'vegan',[],'Rice cooked with lentils and vegetables.','🍚',{unk:true})]},
+ {id:'r4',name:'Biryani Boulevard',cu:'Biryani, Mughlai',area:'HSR Layout',rt:4.2,eta:'35-40',of:'10% OFF',bg:'linear-gradient(135deg,#9a3412,#fdba74)',e:'🍲',items:[
+  m('Chicken Dum Biryani',289,'nonveg',['onion','garlic','dairy'],'Slow-cooked basmati and chicken.','🍗'),
+  m('Mutton Biryani',349,'nonveg',['onion','garlic','dairy'],'Tender mutton layered with rice.','🍖'),
+  m('Veg Biryani',219,'veg',['onion','garlic','dairy','nuts'],'Seasonal vegetables dum biryani.','🍲',{omit:['onion','garlic']}),
+  m('Egg Biryani',239,'egg',['onion','garlic','dairy','egg'],'Boiled eggs in spiced rice.','🥚'),
+  m('Raita',49,'veg',['dairy'],'Whisked yogurt with cucumber.','🥛'),
+  m('Gulab Jamun (2 pcs)',79,'veg',['dairy','gluten','nuts'],'Milk dumplings in sugar syrup.','🍡'),
+  m('Paneer Tikka',229,'veg',['dairy','garlic'],'Grilled marinated cottage cheese.','🍢',{omit:['garlic']})]},
+ {id:'r5',name:'Wok This Way',cu:'Chinese, Asian',area:'BTM Layout',rt:4.1,eta:'30-35',of:'FLAT ₹50 OFF',bg:'linear-gradient(135deg,#991b1b,#fca5a5)',e:'🥡',items:[
+  m('Veg Hakka Noodles',179,'veg',['gluten','soy','garlic','onion'],'Wok-tossed noodles with crunchy vegetables.','🍜',{omit:['garlic','onion']}),
+  m('Chilli Chicken',249,'nonveg',['soy','garlic','gluten'],'Crispy chicken in a spicy sauce.','🍗'),
+  m('Veg Manchurian',189,'veg',['soy','gluten','garlic','onion'],'Vegetable dumplings in tangy gravy.','🥘'),
+  m('Egg Fried Rice',169,'egg',['egg','soy','garlic'],'Wok fried rice with scrambled egg.','🍳'),
+  m('Steamed Veg Momos',129,'veg',['gluten','soy','garlic'],'Steamed dumplings with spicy dip.','🥟'),
+  m('Hot & Sour Soup',119,'veg',['soy','garlic'],'Peppery vegetable soup.','🍲'),
+  m('Veg Spring Rolls',149,'veg',['gluten','onion'],'Crunchy rolls with sweet chilli dip.','🌯')]},
+ {id:'r6',name:'Pizza Piazza',cu:'Pizza, Italian',area:'Whitefield',rt:4.4,eta:'30-35',of:'ITEMS AT ₹149',bg:'linear-gradient(135deg,#b91c1c,#fbbf24)',e:'🍕',items:[
+  m('Margherita Pizza',249,'veg',['gluten','dairy'],'Classic tomato and mozzarella.','🍕'),
+  m('Farmhouse Pizza',399,'veg',['gluten','dairy','onion'],'Capsicum, onion, mushroom and olives.','🍕',{omit:['onion']}),
+  m('Pepperoni Pizza',429,'nonveg',['gluten','dairy'],'Loaded with chicken pepperoni.','🍕'),
+  m('Garlic Bread',149,'veg',['gluten','dairy','garlic'],'Toasted bread with garlic butter.','🥖'),
+  m('Alfredo Pasta',299,'veg',['gluten','dairy','garlic'],'Penne in white sauce.','🍝'),
+  m('Pesto Pasta',319,'veg',['gluten','dairy','nuts','garlic'],'Penne in basil and pine-nut pesto.','🍝'),
+  m('Choco Lava Cake',119,'egg',['egg','gluten','dairy'],'Warm cake with molten chocolate.','🍫')]},
+ {id:'r7',name:'Sweet Tooth Studio',cu:'Desserts, Bakery',area:'Koramangala',rt:4.6,eta:'20-25',of:'₹60 OFF ABOVE ₹249',bg:'linear-gradient(135deg,#9d174d,#f9a8d4)',e:'🍰',items:[
+  m('Walnut Brownie',129,'egg',['egg','gluten','dairy','nuts'],'Fudgy brownie with walnuts.','🍫'),
+  m('Vegan Chocolate Mousse',169,'vegan',[],'Dark chocolate and coconut cream.','🍮'),
+  m('Kaju Katli Box',249,'veg',['nuts','dairy'],'Cashew fudge, 250 g.','🍬'),
+  m('Rasmalai (2 pcs)',149,'veg',['dairy','nuts'],'Soft cheese discs in saffron milk.','🍥'),
+  m('Mango Sorbet',139,'vegan',[],'Dairy-free mango sorbet.','🍧'),
+  m('New York Cheesecake',189,'egg',['dairy','gluten','egg'],'Baked cheesecake with berry compote.','🍰'),
+  m('Oat Cookies (4 pcs)',99,'vegan',['gluten'],'Chewy oat and jaggery cookies.','🍪')]},
+ {id:'r8',name:"Mama's Jain Kitchen",cu:'Jain, Gujarati',area:'Jayanagar',rt:4.5,eta:'30-35',of:'FREE DELIVERY',bg:'linear-gradient(135deg,#047857,#fcd34d)',e:'🍱',items:[
+  m('Jain Pav Bhaji',189,'veg',['dairy','gluten'],'No onion, garlic or root vegetables.','🍛'),
+  m('Khaman Dhokla',129,'vegan',['gluten'],'Steamed gram flour cake.','🧁'),
+  m('Methi Thepla (4 pcs)',119,'veg',['gluten','sesame'],'Fenugreek flatbread.','🫓'),
+  m('Sabudana Khichdi',149,'vegan',['nuts'],'Tapioca pearls with peanuts.','🥣'),
+  m('Kathiyawadi Thali',299,'veg',[],'Full thali with sabzi, dal, rice and roti.','🍱',{unk:true}),
+  m('Fafda Jalebi',99,'vegan',['gluten'],'Crisp gram flour fafda with jalebi.','🥨'),
+  m('Masala Chaas',49,'veg',['dairy'],'Spiced buttermilk.','🥛')]}
+];
+RESTS.forEach(r=>r.items.forEach((it,i)=>it.id=r.id+'-'+i));
+const rest=id=>RESTS.find(r=>r.id===id);
+const itemById=id=>{const r=rest(id.split('-')[0]);return {r,it:r.items.find(x=>x.id===id)}};
+const day=864e5;
+const seedOrders=()=>{const now=new Date();return [['r1',520,1],['r6',690,2],['r4',610,4],['r3',310,5],['r2',470,6],['r5',430,8],['r8',380,9],['r1',540,11],['r7',290,12],['r2',460,13]].map(([r,t,d],i)=>{const at=new Date(now.getFullYear(),now.getMonth(),Math.max(1,now.getDate()-d),13,30);return {id:'o'+i,r,t,at:at.toISOString()}})};
+const seed=()=>({rules:{on:true,diet:'jain',excl:['nuts'],mode:'hide'},budget:{amount:6000,nudge:true,thr:80},orders:seedOrders(),cart:{r:null,lines:{}}});
+let S;const KEY='swpro_v1';
+try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}
+if(!S||!S.rules)S=seed();
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const inr=n=>'₹'+Math.round(n).toLocaleString('en-IN');
+
+/* ================= FOOD RULES (Feature 1) ================= */
+function evalItem(it){
+ const R=S.rules;if(!R.on)return {s:'ok',why:[]};
+ if(it.unk)return {s:'unk',why:[]};
+ const why=[],rank={vegan:0,veg:1,egg:2,nonveg:3},max={vegan:0,veg:1,jain:1,egg:2,any:3}[R.diet];
+ if(rank[it.diet]>max)why.push({k:'diet',t:it.diet==='nonveg'?'Non-veg':it.diet==='egg'?'Egg':'Dairy'});
+ const ex=new Set(R.excl);if(R.diet==='jain'){ex.add('onion');ex.add('garlic');ex.add('root')}
+ it.has.forEach(h=>{if(ex.has(h))why.push({k:h,t:LBL[h]})});
+ if(!why.length)return {s:'ok',why};
+ const om=it.omit||[];
+ if(why.every(w=>om.includes(w.k)))return {s:'mod',why,note:'No '+why.map(w=>w.t.toLowerCase()).join(', ')};
+ return {s:'bad',why};
+}
+function restStats(r){const e=r.items.map(evalItem);return {n:r.items.length,match:e.filter(x=>x.s==='ok'||x.s==='mod').length,unk:e.filter(x=>x.s==='unk').length}}
+const MINMATCH=3;
+const rulesText=()=>{const R=S.rules;if(!R.on)return 'Off';const p=[DLBL[R.diet]];R.excl.forEach(x=>p.push('No '+LBL[x].toLowerCase()));return p.join(' · ')};
+
+/* ================= BUDGET (Feature 2) ================= */
+function monthOrders(){const n=new Date();return S.orders.filter(o=>{const d=new Date(o.at);return d.getFullYear()===n.getFullYear()&&d.getMonth()===n.getMonth()})}
+const spent=()=>monthOrders().reduce((a,o)=>a+o.t,0);
+function bstate(add=0){
+ const B=S.budget&&S.budget.amount,sp=spent();if(!B)return {none:true,sp};
+ const after=sp+add,pa=after/B*100,thr=S.budget.thr;
+ return {B,sp,add,after,p:sp/B*100,pa,level:pa>100?'red':pa>=thr?'amber':'green'};
+}
+function pbar(b){const w1=Math.min(100,b.p),w2=Math.max(0,Math.min(100-w1,b.pa-b.p));return `<div class="pb"><div class="s ${b.p>100?'red':b.p>=S.budget.thr?'amber':''}" style="width:${w1}%"></div>${b.add?`<div class="a" style="width:${w2}%"></div>`:''}</div>`}
+const monthName=()=>new Date().toLocaleDateString('en-IN',{month:'long'});
+function billFor(){
+ const L=S.cart.lines,item=Object.keys(L).reduce((a,id)=>a+itemById(id).it.price*L[id].q,0);
+ if(!item)return {item:0,del:0,plat:0,gst:0,total:0};
+ const del=39,plat=6,gst=Math.round(item*.05+12);return {item,del,plat,gst,total:item+del+plat+gst};
+}
+const cartCount=()=>Object.values(S.cart.lines).reduce((a,l)=>a+l.q,0);
+
+/* ================= ROUTER ================= */
+let route='home',rid=null,q={},view={only:false},modal=null;
+function parse(){const h=location.hash.replace(/^#\/?/,'');const [p,qs]=h.split('?');const [r,i]=(p||'home').split('/');route=r||'home';rid=i||null;q=Object.fromEntries(new URLSearchParams(qs||''))}
+const go=r=>{location.hash='#/'+r};
+window.addEventListener('hashchange',()=>{parse();render()});
+
+/* ================= ICONS ================= */
+const IC={
+ search:'<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.500-4.500"/>',offers:'<path d="M20 12l-8 8-9-9V3h8z"/><circle cx="7.500" cy="7.500" r="1.500"/>',help:'<circle cx="12" cy="12" r="9"/><path d="M9.500 9a2.500 2.500 0 114 2c-1 .7-1.500 1.200-1.500 2.500M12 17h.01"/>',
+ user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.500-6 8-6s8 2 8 6"/>',bag:'<path d="M5 8h14l-1 13H6zM9 8V6a3 3 0 016 0v2"/>',corp:'<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a1 1 0 011-1h4a1 1 0 011 1v2"/>',
+ rules:'<path d="M4 6h16M7 12h10M10 18h4"/>',wallet:'<rect x="3" y="6" width="18" height="14" rx="3"/><path d="M3 10h18M16 15h2"/>',check:'<path d="M5 12.500l4.500 4.500L19 7"/>',warn:'<path d="M12 3l10 18H2zM12 10v5M12 18h.01"/>',star:'<path d="M12 2l3 7 7.500.6-5.700 5 1.800 7.400L12 18l-6.600 4 1.800-7.400-5.700-5L9 9z"/>',x:'<path d="M6 6l12 12M18 6L6 18"/>'
+};
+const I=(n,c='')=>`<svg class="i ${c}" viewBox="0 0 24 24">${IC[n]}</svg>`;
+const STAR='<span class="star"><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7.500.6-5.700 5 1.800 7.400L12 18l-6.600 4 1.800-7.400-5.700-5L9 9z"/></svg></span>';
+
+/* ================= HEADER ================= */
+function header(){
+ const c=cartCount();
+ $('hdr').innerHTML=`<div class="hd"><a class="lgo" href="#/home"><img src="logo.png" alt="Swiggy" style="height:46px;width:auto;display:block">swiggy</a>
+ <div class="loc"><b>Other</b><span>Koramangala, Bengaluru, Karnataka, India ▾</span></div>
+ <nav class="nav"><a>${I('corp')}<span class="lb">Corporate</span></a><a>${I('search')}<span class="lb">Search</span></a><a>${I('offers')}<span class="lb">Offers</span></a><a>${I('help')}<span class="lb">Help</span></a>
+ <button data-a="rules" class="${modal&&modal.t==='rules'?'on':''}">${I('rules')}<span class="lb">Food Rules</span> <span class="new">NEW</span></button>
+ <a href="#/budget" class="${route==='budget'?'on':''}">${I('wallet')}<span class="lb">Budget</span> <span class="new">NEW</span></a>
+ <a>${I('user')}<span class="lb">Manish</span></a>
+ <a href="#/cart" class="${route==='cart'?'on':''}">${I('bag')}<span class="cnt">${c}</span><span class="lb">Cart</span></a></nav></div>`;
+}
+
+/* ================= HOME ================= */
+function budgetBanner(){
+ const b=bstate();
+ if(b.none)return `<div class="bb cta" data-a="budget"><div class="l"><b>Set a monthly food budget</b><small>Get a heads-up before an order takes you over</small></div><div style="flex:1"></div><span class="link">SET BUDGET ›</span></div>`;
+ const left=Math.max(0,b.B-b.sp),dl=new Date(new Date().getFullYear(),new Date().getMonth()+1,0).getDate()-new Date().getDate()+1;
+ return `<div class="bb" data-a="gobudget"><div class="l"><small>${monthName()} food budget</small><b>${inr(b.sp)} <span style="font-weight:500;color:var(--t2);font-size:15px">of ${inr(b.B)}</span></b></div>
+ <div class="bbar">${pbar(b)}<div class="sub"><span>${Math.round(b.p)}% used</span><span>${b.sp>b.B?inr(b.sp-b.B)+' over budget':inr(left)+' left · ≈ '+inr(left/dl)+'/day for '+dl+' days'}</span></div></div><span class="link">VIEW DETAILS ›</span></div>`;
+}
+function home(){
+ const R=S.rules;
+ const all=RESTS.map(r=>({r,st:restStats(r)}));
+ const shown=all.filter(x=>!R.on||R.mode==='flag'||x.st.match>=MINMATCH),hidden=all.length-shown.length;
+ return `<div class="wrap">${budgetBanner()}
+ <h2 class="t">What's on your mind?</h2><div class="cu">${[['🍛','North Indian'],['🍕','Pizzas'],['🥞','South Indian'],['🍲','Biryani'],['🥡','Chinese'],['🥗','Healthy'],['🍰','Desserts'],['🍔','Burgers']].map(c=>`<div><span>${c[0]}</span>${c[1]}</div>`).join('')}</div><hr>
+ <h2 class="t">Restaurants with online food delivery in Bengaluru</h2>
+ <div class="chips"><span class="chip">Filter ⚙</span><span class="chip">Sort By ▾</span><span class="chip">Fast Delivery</span><span class="chip">Ratings 4.0+</span><span class="chip">Pure Veg</span><span class="chip">Offers</span>
+  <span class="chip fr" data-a="rules" style="cursor:pointer">${I('rules')}${R.on?`<b>Food Rules:</b> ${esc(rulesText())}`:'Food Rules: off'} <span style="margin-left:4px">Edit</span></span></div>
+ ${R.on?`<div class="cnt-line"><span>${shown.length} of ${all.length} restaurants match your rules${hidden?` · ${hidden} hidden (fewer than ${MINMATCH} suitable dishes)`:''}</span>${hidden?`<a class="link" data-a="showall">Show all</a>`:R.mode==='flag'?`<a class="link" data-a="hidemode">Hide poor matches</a>`:''}</div>`:''}
+ ${shown.length?`<div class="grid">${shown.map(({r,st})=>`<a class="rc" href="#/rest/${r.id}"><div class="im" style="background:${r.bg}">${r.e}<span class="of">${r.of}</span></div><h3>${r.name}</h3><div class="rt">${STAR}${r.rt} • ${r.eta} mins</div><div class="cs">${r.cu}</div><div class="cs">${r.area}</div>${R.on?`<span class="mt ${st.match>=MINMATCH?'g':'a'}">${st.match} of ${st.n} dishes match${st.match<MINMATCH?' · few options':''}</span>`:''}</a>`).join('')}</div>`
+ :`<div style="text-align:center;padding:60px 0;color:var(--t2)"><div style="font-size:54px">🍽️</div><h3 style="color:var(--ink)">No restaurants match your rules right now</h3><p>Try relaxing a rule or show all restaurants.</p><button class="btn p" style="max-width:260px" data-a="showall">SHOW ALL</button></div>`}
+ </div>`;
+}
+
+/* ================= RESTAURANT ================= */
+function rest_(id){
+ const r=rest(id);if(!r)return `<div class="rp">Not found</div>`;
+ const R=S.rules,st=restStats(r),L=S.cart.lines;
+ const rows=r.items.map(it=>({it,e:evalItem(it)})).filter(x=>!(view.only&&x.e.s==='bad'));
+ const dv=d=>d==='nonveg'?'nv':d==='egg'?'eg':'';
+ const cnt=cartCount(),b=billFor();
+ return `<div class="rp"><div class="crumb"><a href="#/home">Home</a> / Bengaluru / ${r.name}</div><h1>${r.name}</h1>
+ <div class="box"><div class="r1">${STAR}${r.rt} (2.1K+ ratings) • ₹${300+r.items.length*20} for two</div><div class="r2" style="color:var(--or);font-weight:700;margin-top:8px;text-decoration:underline">${r.cu}</div><div class="r2">Outlet · ${r.area}</div><div class="r2"><b>${r.eta} mins</b> · Free delivery on orders above ₹499</div></div>
+ ${R.on?`<div class="fr-strip"><span style="color:var(--or)">${I('rules')}</span><div class="tx"><b>${st.match} of ${st.n} dishes</b> match your Food Rules<br><span style="color:var(--t2)">${esc(rulesText())}${st.unk?` · ${st.unk} without allergen info`:''}</span></div><span class="sw ${view.only?'on':''}" data-a="only"><i></i>Hide non-matching</span><a class="link" data-a="rules">Edit</a></div>`
+ :`<div class="fr-strip"><div class="tx">Food Rules are off. <a class="link" data-a="rules">Turn on</a> to see which dishes suit you.</div></div>`}
+ <div class="menu-h">Recommended (${rows.length})</div>
+ ${rows.map(({it,e})=>{const l=L[it.id];return `<div class="mi ${e.s==='bad'?'bad':''}"><div class="tx"><span class="vi ${dv(it.diet)}"></span><div class="nm">${it.name}</div><div class="pr">${inr(it.price)}</div><div class="ds">${it.desc}</div>
+  ${R.on?(e.s==='ok'?`<span class="bd ok">${I('check','')}Matches your rules</span>`:e.s==='mod'?`<span class="bd mod">${I('check')}Can be made without ${e.why.map(w=>w.t.toLowerCase()).join(' & ')} · note added</span>`:e.s==='bad'?`<span class="bd bad">${I('warn')}Contains: ${e.why.map(w=>w.t).join(', ')}</span>`:`<span class="bd unk">Allergen info not provided by restaurant</span>`):''}</div>
+  <div class="pic"><div class="ph">${it.e}</div>${l?`<div class="add"><span data-a="dec" data-id="${it.id}">−</span><b>${l.q}</b><span data-a="inc" data-id="${it.id}">+</span></div>`:`<button class="add single" data-a="add" data-id="${it.id}">ADD</button>`}</div></div>`}).join('')}
+ </div>
+ ${cnt&&S.cart.r===r.id?`<div class="cbar" data-a="gocart"><span>${cnt} item${cnt>1?'s':''} | ${inr(b.item)}</span><span>VIEW CART ▸</span></div>`:''}`;
+}
+
+/* ================= CART ================= */
+function cart(){
+ const L=S.cart.lines,ids=Object.keys(L);
+ if(!ids.length)return `<div style="text-align:center;padding:90px 20px"><div style="font-size:72px">🛒</div><h2 style="margin:12px 0 6px">Your cart is empty</h2><p style="color:var(--t2);margin-bottom:18px">You can go to home page to view more restaurants</p><a class="btn p" style="display:inline-block;max-width:300px" href="#/home">SEE RESTAURANTS NEAR YOU</a></div>`;
+ const r=rest(S.cart.r),b=billFor(),bs=bstate(b.total);
+ const bad=ids.filter(id=>evalItem(itemById(id).it).s==='bad');
+ let bi='';
+ if(bs.none)bi=`<div class="bi" style="background:#fffaf5;border-style:dashed"><h4>Food budget</h4><p style="margin:0">You haven't set a monthly budget. <a class="link" data-a="budget">Set one</a> to see how orders affect it.</p></div>`;
+ else{const left=bs.B-bs.after;
+  bi=`<div class="bi ${S.budget.nudge?bs.level:'green'}"><h4><span>${monthName()} food budget</span><span style="font-weight:600;color:var(--t2)">${Math.round(bs.p)}% → <b style="color:${bs.level==='red'?'var(--red)':bs.level==='amber'?'#9a6200':'var(--gr-d)'}">${Math.round(bs.pa)}%</b></span></h4>${pbar(bs)}
+  <p><b>${inr(bs.sp)}</b> spent + <b style="color:var(--or-d)">${inr(b.total)}</b> this order = <b>${inr(bs.after)}</b> of ${inr(bs.B)}.
+  ${!S.budget.nudge?'':bs.level==='red'?`<br><b style="color:#b9341f">This order puts you ${inr(-left)} over budget.</b>`:bs.level==='amber'?`<br><b style="color:#9a6200">You will have used more than ${S.budget.thr}% of your budget. ${inr(left)} left for the rest of ${monthName()}.</b>`:`<br>${inr(left)} left after this order.`}</p></div>`}
+ return `<div class="cart"><div>
+  <div class="card"><h3>${r.name}</h3><div style="color:var(--t2);font-size:14px;margin:-6px 0 8px">${r.area}</div>
+  ${bad.length?`<div class="warn">${I('warn')} ${bad.length} item${bad.length>1?'s':''} in your cart conflict with your Food Rules: <b>${bad.map(id=>itemById(id).it.name).join(', ')}</b></div>`:''}
+  ${ids.map(id=>{const {it}=itemById(id),l=L[id];return `<div class="ln"><span class="vi ${it.diet==='nonveg'?'nv':it.diet==='egg'?'eg':''}" style="margin-top:3px"></span><div class="n">${it.name}${l.note?`<i>Note to restaurant: ${esc(l.note)}</i>`:''}</div><div class="stp"><button data-a="dec" data-id="${id}">−</button><span>${l.q}</span><button data-a="inc" data-id="${id}">+</button></div><div style="width:64px;text-align:right;font-weight:600;font-size:14px">${inr(it.price*l.q)}</div></div>`}).join('')}
+  <div style="margin-top:6px"><a class="link" href="#/rest/${r.id}">+ Add more items</a></div></div></div>
+  <div>${bi}<div class="card bill"><h3>Bill Details</h3><div><span>Item Total</span><span>${inr(b.item)}</span></div><div><span>Delivery Fee | 2.1 kms</span><span>${inr(b.del)}</span></div><div><span>Platform fee</span><span>${inr(b.plat)}</span></div><div><span>GST and Restaurant Charges</span><span>${inr(b.gst)}</span></div><div class="tot"><span>TO PAY</span><span>${inr(b.total)}</span></div></div>
+  <button class="pay" data-a="pay">PROCEED TO PAY</button></div></div>`;
+}
+
+/* ================= BUDGET PAGE ================= */
+function budget(){
+ const b=bstate(),os=monthOrders().sort((a,c)=>new Date(c.at)-new Date(a.at)),n=new Date();
+ const dm=new Date(n.getFullYear(),n.getMonth()+1,0).getDate(),d=n.getDate();
+ const wk=[0,0,0,0,0];os.forEach(o=>{const dd=new Date(o.at).getDate();wk[Math.min(4,Math.floor((dd-1)/7))]+=o.t});
+ const mx=Math.max(1,...wk),proj=b.sp/d*dm;
+ const byR={};os.forEach(o=>byR[o.r]=(byR[o.r]||0)+o.t);const top=Object.entries(byR).sort((a,c)=>c[1]-a[1]).slice(0,4);
+ return `<div class="bp"><h1>Food budget</h1><div style="color:var(--t2)">${monthName()} ${n.getFullYear()} · ${d} of ${dm} days</div>
+ ${b.none?`<div class="card" style="margin-top:18px;text-align:center;padding:40px"><div style="font-size:48px">💰</div><h3>No budget set</h3><p style="color:var(--t2)">Set a monthly amount and we will show a heads-up at checkout.</p><button class="btn p" style="max-width:240px" data-a="budget">SET BUDGET</button></div>`:`
+ <div class="card" style="margin-top:18px"><div style="display:flex;justify-content:space-between;align-items:baseline"><div><b style="font-size:32px;letter-spacing:-.8px">${inr(b.sp)}</b> <span style="color:var(--t2)">of ${inr(b.B)}</span></div><a class="link" data-a="budget">EDIT BUDGET</a></div><div style="margin:12px 0 4px">${pbar(b)}</div>
+ <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--t2)"><span>${Math.round(b.p)}% used</span><span>${b.sp>b.B?inr(b.sp-b.B)+' over':inr(b.B-b.sp)+' left'}</span></div></div>
+ <div class="k3"><div class="kp"><small>Daily average</small><b>${inr(b.sp/d)}</b><i>so far this month</i></div>
+ <div class="kp"><small>Projected by month end</small><b style="color:${proj>b.B?'var(--red)':'var(--gr-d)'}">${inr(proj)}</b><i>${proj>b.B?inr(proj-b.B)+' over your budget at this pace':'within your budget at this pace'}</i></div>
+ <div class="kp"><small>Safe to spend per day</small><b>${inr(Math.max(0,b.B-b.sp)/Math.max(1,dm-d+1))}</b><i>for the remaining ${dm-d+1} days</i></div></div>
+ <div class="two"><div class="card"><h3>Spend by week</h3><div class="wk">${wk.map((v,i)=>`<div><span style="height:${v/mx*110}px"></span>${v?inr(v):'–'}<br>W${i+1}</div>`).join('')}</div></div>
+ <div class="card"><h3>Top restaurants</h3>${top.map(([id,v])=>`<div class="ord"><span>${rest(id).name}</span><b>${inr(v)}</b></div>`).join('')||'<div style="color:var(--t2)">No orders yet</div>'}</div></div>
+ <div class="card"><h3>Orders this month <span style="color:var(--t2);font-weight:500;font-size:14px">(${os.length})</span></h3>${os.map(o=>`<div class="ord"><span>${rest(o.r).name}<small>${new Date(o.at).toLocaleDateString('en-IN',{day:'numeric',month:'short'})}</small></span><b>${inr(o.t)}</b></div>`).join('')}</div>
+ <div class="card" style="display:flex;justify-content:space-between;align-items:center"><span>Checkout heads-up <span style="color:var(--t2);font-size:14px">at ${S.budget.thr}% of budget</span></span><span class="sw ${S.budget.nudge?'on':''}" data-a="togglenudge"><i></i>${S.budget.nudge?'On':'Off'}</span></div>`}
+ </div>`;
+}
+
+/* ================= MODALS ================= */
+function closeModal(){modal=null;$('mroot').classList.remove('on');$('mroot').innerHTML='';header()}
+function openModal(m){modal=m;renderModal();header()}
+const shell=(t,b,f)=>`<div class="modal" role="dialog" aria-label="${esc(t)}"><div class="mh"><h2>${t}</h2><button class="mx" data-a="close" aria-label="Close">✕</button></div><div class="mb">${b}</div><div class="mf">${f}</div></div>`;
+function renderModal(){
+ if(!modal)return;const m=modal;let h='';
+ if(m.t==='rules'){const R=m.d;
+  h=shell('My Food Rules',`<div style="display:flex;justify-content:space-between;align-items:center"><span style="color:var(--t2);font-size:14px">Filter restaurants and flag dishes automatically</span><span class="sw ${R.on?'on':''}" data-a="r_on"><i></i>${R.on?'On':'Off'}</span></div>
+  <h5>Diet</h5><div class="pillrow">${DIETS.map(([k,l])=>`<button class="pill ${R.diet===k?'on':''}" data-a="r_diet" data-k="${k}">${l}</button>`).join('')}</div>
+  <h5>Also avoid</h5><div class="pillrow">${AVOID.map(k=>`<button class="pill bad ${R.excl.includes(k)?'on':''}" data-a="r_ex" data-k="${k}">${LBL[k]}</button>`).join('')}</div>
+  <h5>Restaurants with fewer than ${MINMATCH} suitable dishes</h5><div class="pillrow"><button class="pill ${R.mode==='hide'?'on':''}" data-a="r_mode" data-k="hide">Hide them</button><button class="pill ${R.mode==='flag'?'on':''}" data-a="r_mode" data-k="flag">Show with a flag</button></div>
+  <div class="fine">Matches are based on ingredients declared by restaurants and may be incomplete. For severe allergies, always confirm with the restaurant. Dishes with no information are never marked as a match.</div>`,
+  `<button class="btn g" data-a="close">CANCEL</button><button class="btn p" data-a="r_save">SAVE RULES</button>`);
+ }else if(m.t==='budget'){
+  h=shell('Monthly food budget',`<div class="fld"><label>Amount for ${monthName()} (₹)</label><input id="ba" inputmode="numeric" value="${m.v??(S.budget?S.budget.amount:'')}" placeholder="e.g. 6000"><div class="err">${m.err||''}</div></div>
+  <h5>Checkout heads-up</h5><div class="fld"><label>Warn me when an order takes me past</label><select id="bt">${[70,80,90].map(n=>`<option value="${n}" ${((S.budget&&S.budget.thr)||80)===n?'selected':''}>${n}% of my budget</option>`).join('')}</select></div>
+  <div class="fine">Your budget is private to you and resets on the 1st of every month. It never blocks an order: you can always place it anyway.</div>`,
+  `${S.budget?`<button class="btn g" data-a="b_remove">REMOVE</button>`:''}<button class="btn p" data-a="b_save">SAVE BUDGET</button>`);
+ }else if(m.t==='conf'){const {it}=itemById(m.id),e=evalItem(it);
+  h=shell('This dish may not suit you',`<p style="margin:6px 0 0;line-height:1.5"><b>${it.name}</b> contains <b style="color:#b9341f">${e.why.map(w=>w.t.toLowerCase()).join(', ')}</b>, which doesn't match your Food Rules (${esc(rulesText())}).</p><div class="fine">Ingredient information is declared by the restaurant.</div>`,
+  `<button class="btn g" data-a="close">GO BACK</button><button class="btn p" data-a="add_force" data-id="${m.id}">ADD ANYWAY</button>`);
+ }else if(m.t==='replace'){
+  h=shell('Replace cart items?',`<p style="margin:6px 0 0;line-height:1.5">Your cart has items from <b>${rest(S.cart.r).name}</b>. Do you want to discard them and add <b>${itemById(m.id).it.name}</b> from ${itemById(m.id).r.name}?</p>`,
+  `<button class="btn g" data-a="close">NO</button><button class="btn p" data-a="replace_ok" data-id="${m.id}">YES, START AFRESH</button>`);
+ }else if(m.t==='over'){const bs=bstate(billFor().total);
+  h=shell('This order is over your budget',`<p style="margin:6px 0 10px;line-height:1.5">With this order you will have spent <b>${inr(bs.after)}</b> of your <b>${inr(bs.B)}</b> ${monthName()} budget, <b style="color:#b9341f">${inr(bs.after-bs.B)} over</b>.</p>${pbar(bs)}<div class="fine">You can still place it. Nothing is blocked.</div>`,
+  `<button class="btn g" data-a="close">REVIEW CART</button><button class="btn gr" data-a="place">PLACE ORDER ANYWAY</button>`);
+ }
+ const r=$('mroot');r.innerHTML=h;r.classList.add('on');
+}
+
+/* ================= TOAST ================= */
+let tt;function toast(msg,act,fn){const t=$('toast');t.innerHTML=`<span>${msg}</span>${act?`<button id="tact">${act}</button>`:''}`;t.classList.add('on');if(act)$('tact').onclick=()=>{t.classList.remove('on');fn()};clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('on'),5500)}
+
+/* ================= ACTIONS ================= */
+function addLine(id,force){
+ const {r,it}=itemById(id),e=evalItem(it);
+ if(S.cart.r&&S.cart.r!==r.id&&Object.keys(S.cart.lines).length){openModal({t:'replace',id});return}
+ if(e.s==='bad'&&!force){openModal({t:'conf',id});return}
+ S.cart.r=r.id;S.cart.lines[id]={q:1,note:e.s==='mod'?e.note:''};save();render()
+}
+function place(){
+ const b=billFor(),r=S.cart.r;S.orders.push({id:'o'+Date.now(),r,t:b.total,at:new Date().toISOString()});
+ S.cart={r:null,lines:{}};save();closeModal();go('home');render();
+ const bs=bstate();toast(`Order placed · arriving in ${rest(r).eta} mins`+(bs.none?'':` · ${Math.round(bs.p)}% of budget used`),'View budget',()=>go('budget'));
+}
+const A={
+ rules(){openModal({t:'rules',d:JSON.parse(JSON.stringify(S.rules))})},
+ r_on(){modal.d.on=!modal.d.on;renderModal()},
+ r_diet(e){modal.d.diet=e.k;renderModal()},
+ r_ex(e){const a=modal.d.excl,i=a.indexOf(e.k);i<0?a.push(e.k):a.splice(i,1);renderModal()},
+ r_mode(e){modal.d.mode=e.k;renderModal()},
+ r_save(){S.rules=modal.d;save();closeModal();render();toast('Food Rules saved: '+rulesText())},
+ showall(){S.rules.mode='flag';save();render()},hidemode(){S.rules.mode='hide';save();render()},
+ only(){view.only=!view.only;render()},
+ add(e){addLine(e.id)},add_force(e){closeModal();addLine(e.id,true)},
+ replace_ok(e){S.cart={r:null,lines:{}};closeModal();addLine(e.id)},
+ inc(e){S.cart.lines[e.id].q++;save();render()},
+ dec(e){const l=S.cart.lines[e.id];l.q--;if(l.q<=0){delete S.cart.lines[e.id];if(!Object.keys(S.cart.lines).length)S.cart.r=null}save();render()},
+ gocart(){go('cart')},gobudget(){go('budget')},
+ budget(){openModal({t:'budget'})},
+ b_save(){const v=$('ba').value.trim(),n=Number(v);
+  if(!/^\d+$/.test(v)||n<500||n>100000){modal.err='Enter a whole amount between ₹500 and ₹1,00,000.';modal.v=v;renderModal();return}
+  S.budget={amount:n,nudge:S.budget?S.budget.nudge:true,thr:+$('bt').value};save();closeModal();render();toast('Budget set to '+inr(n))},
+ b_remove(){S.budget=null;save();closeModal();render();toast('Budget removed')},
+ togglenudge(){S.budget.nudge=!S.budget.nudge;save();render()},
+ pay(){const b=billFor(),bs=bstate(b.total);if(!bs.none&&S.budget.nudge&&bs.level==='red'){openModal({t:'over'});return}place()},
+ place(){place()},
+ close(){closeModal()},
+ reset(){try{localStorage.removeItem(KEY)}catch(e){}S=seed();view={only:false};closeModal();go('home');render();toast('Demo data reset')}
+};
+document.addEventListener('click',ev=>{
+ if(ev.target.id==='mroot'){closeModal();return}
+ const el=ev.target.closest('[data-a]');if(!el)return;
+ const f=A[el.dataset.a];if(f){ev.preventDefault();f({...el.dataset})}
+},true);
+document.addEventListener('keydown',ev=>{if(ev.key==='Escape')closeModal();if(ev.key==='Enter'&&ev.target.id==='ba')A.b_save()});
+
+/* ================= RENDER ================= */
+function render(){
+ const y=window.scrollY;header();
+ document.title=route==='budget'?'Food budget | Swiggy':route==='cart'?'Cart | Swiggy':'Order food online from restaurants near you | Swiggy';
+ $('app').innerHTML=route==='rest'?rest_(rid):route==='cart'?cart():route==='budget'?budget():home();
+ window.scrollTo(0,y);if(modal)renderModal();
+}
+function boot(){
+ parse();if(!location.hash)location.hash='#/home';
+ if(q.demo==='cart'){S.cart={r:'r1',lines:{'r1-1':{q:1,note:'No onion, garlic'},'r1-2':{q:1,note:''},'r1-5':{q:2,note:''}}}}
+ render();
+ if(q.open==='rules')A.rules();
+ if(q.open==='budget')A.budget();
+ if(q.conf)openModal({t:'conf',id:q.conf});
+}
+boot();
+</script>
+</body>
+</html>

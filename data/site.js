@@ -14,9 +14,9 @@ window.SITE = {
   location: "Hyderabad, India",
 
   about: [
-    "Four years ago I joined Deloitte as a DevOps engineer, and I have loved every release since. I look after builds, deployments and the people waiting on them, which means keeping a lot of moving parts calm, tested and shipping smoothly, even when the pace picks up. Yes, I genuinely enjoy that kind of puzzle! 🧩",
-    "Somewhere along the way I fell for product. I love working out why people use something, what quietly frustrates them, and how one small change can make their day better. So now I take products apart, prototype the fix, and spend happy hours exploring the magic of AI ✨, where an idea in my head can become a working app in an afternoon. I am also curious about finance, because that is where good ideas meet the real world.",
-    "Away from the screen you will find me out on a ride 🏍️, chasing new places, adventures and new plates of food, getting lost in history, painting, gaming, playing sports, or chatting away with anyone who has a good story. If that sounds like your kind of person, say hi! 👋"
+    "Four years ago I joined Deloitte as a DevOps engineer. Since then I have put real effort into automating the repetitive work, saving hours so every release is delivered on time and succeeds. I look after builds, deployments and the stakeholders depending on them, keeping many moving parts calm, tested and shipping. Juggling all of it at once is what I enjoy most! 🚀",
+    "Along the way I fell for product. I love working out why people use something, what quietly frustrates them, and how one small change can improve their day. So now I take products apart, prototype the fix, and explore the magic of AI ✨, where an idea can become a working app in an afternoon.",
+    "Away from the screen you will find me on a ride 🏍️, chasing new places and new plates of food, getting lost in history, painting, gaming, or chatting with anyone who has a good story. Got one? The chai is on me! ☕"
   ],
 
 
@@ -47,13 +47,21 @@ window.SITE = {
 
   /* travel photos shown in "Off the clock". Change the captions freely; add/remove photos in assets/img/ */
   gallery: [
-    { img: "assets/img/life-sunworld.jpg",   cap: "Ba Na Hills",   alt: "Manish outside Sun World Ba Na Hills" },
-    { img: "assets/img/life-banahills.jpg",  cap: "Taking it in",  alt: "Manish looking out over a hilltop village" },
-    { img: "assets/img/life-himalaya.jpg",   cap: "Mountain mode", alt: "Manish sitting on a rock in the mountains" },
-    { img: "assets/img/life-ninhbinh.jpg",   cap: "Vietnam",       alt: "Manish at a viewpoint over green limestone hills" }
+    { img: "assets/img/life-sunworld.jpg",     alt: "Manish outside Sun World Ba Na Hills" },
+    { img: "assets/img/life-banahills.jpg",   alt: "Manish looking out over a hilltop village" },
+    { img: "assets/img/life-himalaya.jpg",   alt: "Manish sitting on a rock in the mountains" },
+    { img: "assets/img/life-ninhbinh.jpg",         alt: "Manish at a viewpoint over green limestone hills" }
   ],
 
   automations: [
+    {
+      icon: "branch",
+      wide: true,
+      name: "PR to Merge Pipeline",
+      line: "From raising a PR to merging it, the pipeline validates the code on its own: Apex checks, PMD checks, Flow tests and SA11y accessibility checks. A report shows what to fix, and once the lead approves the PR, it merges to the target branch automatically.",
+      tags: ["Apex checks", "PMD checks", "Flow tests", "SA11y checks", "Report to fix", "Lead approval", "Auto-merge"],
+      img: "assets/img/automation-pr-pipeline.svg"
+    },
     {
       icon: "mail",
       name: "Daily Doc Summary",

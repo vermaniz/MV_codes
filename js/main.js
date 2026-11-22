@@ -80,12 +80,36 @@
 
   /* ---------- shared chrome ---------- */
   setHTML("#nav",
-    '<nav class="nav" id="navbar"><div class="l"><a href="' + home + '#about">About</a><a href="' + home + '#projects">Projects</a></div>' +
+    '<nav class="nav" id="navbar"><span class="ind" aria-hidden="true"></span><div class="l"><a data-sec="about" href="' + home + '#about">About</a><a data-sec="projects" href="' + home + '#projects">Projects</a></div>' +
     '<a class="dots" href="' + (home || "#top") + '" aria-label="Home"><i></i><i></i><i></i></a>' +
-    '<div class="r"><a href="' + home + '#automations">Automations</a><a href="' + home + '#contact">Contact</a></div></nav>');
+    '<div class="r"><a data-sec="automations" href="' + home + '#automations">Automations</a><a data-sec="contact" href="' + home + '#contact">Contact</a></div></nav>');
   setHTML("#footer", "<span>© " + new Date().getFullYear() + " " + esc(S.name) + "</span><a class=\"f-mail\" href=\"mailto:" + esc(S.email) + '" aria-label="Email me" title="Email me"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg></a>');
   var navbar = $("#navbar");
-  function navState() { navbar.classList.toggle("solid", window.scrollY > 40); }
+  var navLinks = [].slice.call(navbar.querySelectorAll("a[data-sec]")), navInd = navbar.querySelector(".ind"), navCur = null, navFirst = true;
+  function navPlace(a) {
+    if (!a) { navInd.style.opacity = "0"; return; }
+    var n = navbar.getBoundingClientRect(), r = a.getBoundingClientRect();
+    if (navFirst) navInd.style.transition = "none";
+    navInd.style.width = r.width + "px"; navInd.style.height = r.height + "px";
+    navInd.style.top = (r.top - n.top) + "px";
+    navInd.style.transform = "translateX(" + (r.left - n.left) + "px)";
+    navInd.style.opacity = "1";
+    if (navFirst) { void navInd.offsetWidth; navInd.style.transition = ""; navFirst = false; }
+  }
+  function navState() {
+    var y = window.scrollY;
+    navbar.classList.toggle("solid", y > 40);
+    var found = null, line = window.innerHeight * .4;
+    navLinks.forEach(function (a) { var s = document.getElementById(a.getAttribute("data-sec")); if (s && s.getBoundingClientRect().top <= line) found = a; });
+    if (document.getElementById("contact") && window.innerHeight + y >= document.documentElement.scrollHeight - 6) found = navLinks[navLinks.length - 1];
+    if (found !== navCur) {
+      navLinks.forEach(function (a) { a.classList.toggle("on", a === found); if (a === found) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current"); });
+      navCur = found; navPlace(found);
+    }
+  }
+  navLinks.forEach(function (a) { a.addEventListener("mouseenter", function () { navPlace(a); }); a.addEventListener("focus", function () { navPlace(a); }); });
+  navbar.addEventListener("mouseleave", function () { navPlace(navCur); });
+  window.addEventListener("resize", function () { navPlace(navCur); });
   window.addEventListener("scroll", navState, { passive: true }); navState();
 
   /* ---------- home content ---------- */
@@ -118,8 +142,10 @@
     }).join("") + '<div class="pcard soon" data-reveal><h3>More coming soon</h3><p class="pc-line">The next project will appear here.</p></div>');
 
     setHTML("#autos", S.automations.map(function (a, i) {
-      return '<figure class="auto glass" data-reveal><button type="button" data-img="' + esc(a.img) + '" aria-label="Enlarge ' + esc(a.name) + '"><img loading="lazy" src="' + esc(a.img) + '" alt="' + esc(a.name) + ' workflow"></button>' +
-        '<div class="cap">' + ico(a.icon || "zap", i) + "<h3>" + esc(a.name) + "</h3></div><p>" + esc(a.line) + "</p></figure>";
+      var tags = a.tags && a.tags.length ? '<ul class="a-tags">' + a.tags.map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") + "</ul>" : "";
+      var body = '<div class="cap">' + ico(a.icon || "zap", i) + "<h3>" + esc(a.name) + "</h3></div><p>" + esc(a.line) + "</p>" + tags;
+      return '<figure class="auto glass' + (a.wide ? " auto-wide" : "") + '" data-reveal><button type="button" data-img="' + esc(a.img) + '" aria-label="Enlarge ' + esc(a.name) + '"><img loading="lazy" src="' + esc(a.img) + '" alt="' + esc(a.name) + ' workflow"></button>' +
+        (a.wide ? '<div class="a-body">' + body + "</div>" : body) + "</figure>";
     }).join(""));
 
     if (S.gallery && S.gallery.length) {
@@ -218,7 +244,7 @@
       function richTop() {
         var p = c.problem, f = c.feature, o = "";
         o += '<section class="rc-sec" id="problem" style="' + tn(0) + '">' + rcHead("01", "target", "Problem statement", 0) +
-          '<div class="rc-grid"><div class="rc-quote glass" data-reveal><span class="rc-eyebrow">The P0 problem I worked on</span><p>' + esc(p.statement) + "</p>" +
+          '<div class="rc-grid"><div class="rc-quote glass" data-reveal><span class="rc-eyebrow">' + esc(p.label || "The P0 problem I worked on") + '</span><p>' + esc(p.statement) + "</p>" +
           (p.goal ? '<div class="rc-goal"><b>Goal</b><span>' + esc(p.goal) + "</span></div>" : "") + "</div>" +
           '<div class="rc-why glass" data-reveal>' +
           (p.pif ? '<div class="rc-pif"><b><span class="count" data-to="' + p.pif + '" data-dec="0">0</span></b><span>PIF score, the highest of the five problems scored</span></div>' : "") +
@@ -246,8 +272,15 @@
             f.bets.map(function (b) {
               return '<div class="rice-row' + (b.pick ? " pick" : "") + '"><span>' + esc(b.name) + (b.star ? " <em>spotlight</em>" : "") + '</span><div class="bar"><i style="width:' + Math.round(b.rice / max * 100) + '%"></i></div><b>' + b.rice + "</b></div>";
             }).join("") + "</div>" : "") +
-            (f.journey ? '<div class="journey glass" data-reveal><h3>' + esc(f.journey.title) + "</h3><p>" + esc(f.journey.note || "") + '</p><ol>' +
-              f.journey.steps.map(function (s, i) { return "<li><i>" + (i + 1) + "</i><b>" + esc(s[0]) + "</b><span>" + esc(s[1]) + "</span></li>"; }).join("") + "</ol></div>" : "") +
+            (f.shots || []).map(function (g) {
+              return '<div class="shots glass" data-reveal><h3>' + esc(g.title) + '</h3><div class="shot-grid">' + g.items.map(function (s) {
+                return '<figure><a href="' + esc(s.src) + '" target="_blank" rel="noopener"><img src="' + esc(s.src) + '" alt="' + esc(s.cap) + '" loading="lazy"></a><figcaption>' + esc(s.cap) + "</figcaption></figure>";
+              }).join("") + "</div></div>";
+            }).join("") +
+            (f.journeys || (f.journey ? [f.journey] : [])).map(function (jn) {
+              return '<div class="journey glass" data-reveal><h3>' + esc(jn.title) + "</h3><p>" + esc(jn.note || "") + '</p><ol>' +
+                jn.steps.map(function (s, i) { return "<li><i>" + (i + 1) + "</i><b>" + esc(s[0]) + "</b><span>" + esc(s[1]) + "</span></li>"; }).join("") + "</ol></div>";
+            }).join("") +
             "</section>";
         }
         return o;
@@ -620,6 +653,32 @@
         });
       });
     }
+  })();
+
+  // contact plane: flies along its dashed trail, the trail draws behind it, then it goes again
+  (function () {
+    var svg = document.querySelector(".touch .plane"); if (!svg) return;
+    var trail = svg.querySelector(".plane-trail"), jet = svg.querySelector(".plane-jet"), reveal = svg.querySelector(".plane-reveal");
+    if (!trail || !jet || !reveal) return;
+    var L = trail.getTotalLength();
+    reveal.style.strokeDasharray = L;
+    function at(t) {
+      var d = L * t, p = trail.getPointAtLength(d), a = trail.getPointAtLength(Math.max(0, d - 2)), b = trail.getPointAtLength(Math.min(L, d + 2));
+      var ang = Math.atan2(b.y - a.y, b.x - a.x) * 180 / Math.PI;
+      jet.setAttribute("transform", "translate(" + (p.x - 14).toFixed(2) + " " + (p.y - 8).toFixed(2) + ") rotate(" + (ang + 44).toFixed(2) + " 14 8)");
+      reveal.style.strokeDashoffset = L * (1 - t);
+    }
+    at(1);
+    if (reduce) return;
+    var o = { t: 0 };
+    var tl = gsap.timeline({ repeat: -1, repeatDelay: .2, paused: true });
+    tl.call(function () { at(0); })
+      .set(svg, { opacity: 1 })
+      .to(o, { t: 1, duration: 3.6, ease: "sine.inOut", onUpdate: function () { at(o.t); } })
+      .to(svg, { opacity: 0, duration: .7 }, "+=.9");
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (en) { en[0].isIntersecting ? tl.play() : tl.pause(); }, { threshold: .2 }).observe(svg);
+    } else { tl.play(); }
   })();
 
   ScrollTrigger.refresh();
